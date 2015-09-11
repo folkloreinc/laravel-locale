@@ -1,0 +1,37 @@
+{
+    "name": "folklore/laravel-locale",
+    "description": "Localization package for Laravel 5",
+    "keywords": ["framework", "laravel", "localization", "locale", "translation"],
+    "authors": [
+        {
+            "name": "Folklore",
+            "email": "info@atelierfolklore.ca",
+            "homepage": "http://atelierfolklore.ca"
+        },
+        {
+            "name": "David Mongeau-Petitpas",
+            "email": "dmp@atelierfolklore.ca",
+            "homepage": "http://mongo.ca",
+            "role": "Developer"
+        }
+    ],
+    "license": "MIT",
+    "type": "project",
+    "require": {
+        "php": ">=5.5.9",
+        "illuminate/support": "5.1.*"
+    },
+    "require-dev": {
+        "orchestra/testbench": "~3.1"
+    },
+    "autoload": {
+        "psr-0": {
+            "Folklore\\LaravelLocale\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "classmap": [
+            "tests/TestCase.php"
+        ]
+    }
+}
