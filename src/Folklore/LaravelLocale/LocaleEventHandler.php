@@ -36,8 +36,12 @@ class LocaleEventHandler {
                 $otherLocales[] = $locale;
             }
         }
-        View::share('locale', $currentLocale);
-        View::share('otherLocales', $otherLocales);
+        
+        if(config('locale.share_with_views', true))
+        {
+            View::share('locale', $currentLocale);
+            View::share('otherLocales', $otherLocales);
+        }
     }
 
     /**
@@ -48,7 +52,7 @@ class LocaleEventHandler {
      */
     public function subscribe($events)
     {
-        $events->listen('router.matched', 'Folklore\LaravelLocale\LocaleEventHandler@onRouteMatched');
+        $events->listen('Illuminate\Routing\Events\RouteMatched', 'Folklore\LaravelLocale\LocaleEventHandler@onRouteMatched');
         $events->listen('locale.changed', 'Folklore\LaravelLocale\LocaleEventHandler@onLocaleChanged');
     }
 

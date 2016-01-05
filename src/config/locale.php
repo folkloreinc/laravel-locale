@@ -10,6 +10,8 @@ return array(
     
     'detect_from_url' => true,
     
-    'store_in_session' => true
+    'store_in_session' => true,
+    
+    'share_with_views' => true
     
 );
