@@ -2,15 +2,18 @@
 
 use App;
 use View;
-use session;
+use Session;
+
+use Illuminate\Routing\Events\RouteMatched;
 
 class LocaleEventHandler {
 
     /**
      * Handle user login events.
      */
-    public function onRouteMatched($route, $request)
+    public function onRouteMatched(RouteMatched $event)
     {
+        $route = $event->route;
         $currentLocale = config('app.locale');
         $action = $route->getAction();
         $locales = config('locale.locales');
