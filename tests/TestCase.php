@@ -8,84 +8,49 @@ class TestCase extends BaseTestCase
     public function setUp()
     {
         parent::setUp();
-        
-        Config::set('app.locale', 'en');
-        
-        Config::set('locale', [
-            
-            'locales' => array(
-                'en',
-                'fr'
-            ),
-            
-            'detect_from_url' => true,
-            
-            'store_in_session' => false
-        ]);
     }
     
     public function testRouteLocale()
     {
-        Route::get('/fr', ['locale' => 'fr', function()
-        {
-            return config('app.locale');
+        Route::get('/fr', ['locale' => 'fr', function () {
+            return App::getLocale();
         }]);
         
-        Route::get('/en', [ 'locale' => 'en', function()
-        {
-            return config('app.locale');
-        }]);
-        
-        Route::get('/es', [ 'locale' => 'es', function()
-        {
-            return config('app.locale');
+        Route::get('/en', [ 'locale' => 'en', function () {
+            return App::getLocale();
         }]);
         
         $this->visit('/fr')
              ->see('fr');
              
         $this->visit('/en')
-             ->see('en');
-             
-        $this->visit('/es')
-             ->see(config('app.locale'));
+             ->see(App::getLocale());
     }
     
     public function testDetectFromUrlSegment()
     {
-        Route::get('/fr', function()
-        {
-            return config('app.locale');
+        Route::get('/fr', function () {
+            return App::getLocale();
         });
         
-        Route::get('/en', function()
-        {
-            return config('app.locale');
-        });
-        
-        Route::get('/es', function()
-        {
-            return config('app.locale');
+        Route::get('/en', function () {
+            return App::getLocale();
         });
         
         $this->visit('/fr')
              ->see('fr');
              
         $this->visit('/en')
-             ->see('en');
-             
-        $this->visit('/es')
-             ->see(config('app.locale'));
+             ->see(App::getLocale());
     }
     
     public function testStoreInSession()
     {
-        Config::set('app.locale', 'en');
         Config::set('locale.store_in_session', true);
+        App::setLocale('en');
         
-        Route::get('/fr', ['locale' => 'fr', function()
-        {
-            return config('app.locale');
+        Route::get('/fr', ['locale' => 'fr', function () {
+            return App::getLocale();
         }]);
         
         $this->visit('/fr');
@@ -95,12 +60,11 @@ class TestCase extends BaseTestCase
     
     public function testRetrieveFromSession()
     {
-        Config::set('app.locale', 'fr');
         Config::set('locale.store_in_session', true);
+        App::setLocale('fr');
         
-        Route::get('/', [function()
-        {
-            return config('app.locale');
+        Route::get('/', [function () {
+            return App::getLocale();
         }]);
         
         $this->withSession(['locale' => 'en'])
@@ -125,7 +89,23 @@ class TestCase extends BaseTestCase
      */
     protected function getEnvironmentSetUp($app)
     {
+        $app['config']->set('app.locale', 'en');
         
+        $app['config']->set('locale', [
+            
+            'locales' => array(
+                'en',
+                'fr'
+            ),
+            
+            'detect_from_url' => true,
+            
+            'detect_from_headers' => true,
+            
+            'store_in_session' => false,
+            
+            'share_with_views' => true
+        ]);
     }
 
     protected function getPackageProviders($app)
@@ -136,7 +116,7 @@ class TestCase extends BaseTestCase
     protected function getPackageAliases($app)
     {
         return array(
-            
+            'LocaleManager'  => 'Folklore\LaravelLocale\LocaleFacade'
         );
     }
 }
