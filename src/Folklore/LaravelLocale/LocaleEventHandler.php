@@ -14,12 +14,13 @@ class LocaleEventHandler
      */
     public function onRouteMatched(RouteMatched $event)
     {
+        $app = app();
         $route = $event->route;
-        $currentLocale = config('app.locale');
+        $currentLocale = $app->getLocale();
         $action = $route->getAction();
         $locales = config('locale.locales');
         if (isset($action['locale']) && $action['locale'] !== $currentLocale && in_array($action['locale'], $locales)) {
-            App::setLocale($action['locale']);
+            $app->setLocale($action['locale']);
         }
     }
     
@@ -36,7 +37,13 @@ class LocaleEventHandler
      */
     public function subscribe($events)
     {
-        $events->listen('Illuminate\Routing\Events\RouteMatched', 'Folklore\LaravelLocale\LocaleEventHandler@onRouteMatched');
-        $events->listen('locale.changed', 'Folklore\LaravelLocale\LocaleEventHandler@onLocaleChanged');
+        $events->listen(
+            \Illuminate\Routing\Events\RouteMatched::class,
+            self::class.'@onRouteMatched'
+        );
+        $events->listen(
+            'locale.changed',
+            self::class.'@onLocaleChanged'
+        );
     }
 }

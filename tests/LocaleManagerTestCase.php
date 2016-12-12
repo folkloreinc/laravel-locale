@@ -3,6 +3,8 @@
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
+use Folklore\LaravelLocale\LocaleChanged;
+
 class LocaleManagerTestCase extends BaseTestCase
 {
     public function setUp()
@@ -13,6 +15,13 @@ class LocaleManagerTestCase extends BaseTestCase
     public function testGetLocale()
     {
         $this->assertEquals(App::getLocale(), LocaleManager::getLocale());
+    }
+    
+    public function testAppGetLocale()
+    {
+        App::setLocale('fr');
+        
+        $this->assertEquals('fr', LocaleManager::getLocale());
     }
     
     public function testSetLocale()
@@ -27,6 +36,12 @@ class LocaleManagerTestCase extends BaseTestCase
         App::setLocale('fr');
         
         $this->assertEquals(LocaleManager::getOtherLocales(), ['en']);
+    }
+    
+    public function testFireEvent()
+    {
+        $this->expectsEvents(LocaleChanged::class);
+        LocaleManager::setLocale('fr');
     }
     
     /**

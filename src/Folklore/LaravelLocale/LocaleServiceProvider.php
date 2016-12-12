@@ -22,7 +22,6 @@ class LocaleServiceProvider extends ServiceProvider
         $this->bootPublishes();
         $this->bootMiddlewares();
         $this->bootEventSubscriber();
-        $this->bootLocale();
     }
     
     protected function bootPublishes()
@@ -45,11 +44,6 @@ class LocaleServiceProvider extends ServiceProvider
     public function bootEventSubscriber()
     {
         $this->app['events']->subscribe('Folklore\LaravelLocale\LocaleEventHandler');
-    }
-    
-    protected function bootLocale()
-    {
-        $this->app['locale.manager']->setLocale($this->app->getLocale());
     }
 
     /**
