@@ -20,7 +20,7 @@ A simple localization package for Laravel 5. It provides URL detection, Route pa
 ```json
 {
 	"require": {
-		"folklore/locale": "~1.0"
+		"folklore/locale": "~2.2"
 	}
 }
 ```
