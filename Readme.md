@@ -2,10 +2,10 @@
 
 A simple localization package for Laravel 5. It provides URL detection, Route parameters, session storage, and view sharing.
 
-[![Latest Stable Version](https://poser.pugx.org/folklore/locale/v/stable.svg)](https://packagist.org/packages/folklore/locale)
+[![Latest Stable Version](https://poser.pugx.org/folklore/laravel-locale/v/stable.svg)](https://packagist.org/packages/folklore/laravel-locale)
 [![Build Status](https://travis-ci.org/Folkloreatelier/laravel-locale.png?branch=master)](https://travis-ci.org/Folkloreatelier/laravel-locale)
 [![Coverage Status](https://coveralls.io/repos/github/Folkloreatelier/laravel-locale/badge.svg?branch=master)](https://coveralls.io/github/Folkloreatelier/laravel-locale?branch=master)
-[![Total Downloads](https://poser.pugx.org/folklore/locale/downloads.svg)](https://packagist.org/packages/folklore/locale)
+[![Total Downloads](https://poser.pugx.org/folklore/laravel-locale/downloads.svg)](https://packagist.org/packages/folklore/laravel-locale)
 
 ## Installation
 
@@ -20,7 +20,7 @@ A simple localization package for Laravel 5. It provides URL detection, Route pa
 ```json
 {
 	"require": {
-		"folklore/locale": "~2.2"
+		"folklore/laravel-locale": "~2.2"
 	}
 }
 ```

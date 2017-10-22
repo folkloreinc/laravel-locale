@@ -1,5 +1,5 @@
 {
-    "name": "folklore/locale",
+    "name": "folklore/laravel-locale",
     "description": "Localization package for Laravel 5",
     "keywords": ["framework", "laravel", "localization", "locale", "translation"],
     "authors": [
