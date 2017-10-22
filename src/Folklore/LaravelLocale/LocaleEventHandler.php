@@ -5,25 +5,22 @@ use Illuminate\Foundation\Events\LocaleUpdated;
 
 class LocaleEventHandler
 {
-
     /**
      * Handle user login events.
      */
     public function onRouteMatched(RouteMatched $event)
     {
-        $app = app();
-        $route = $event->route;
-        $currentLocale = $app->getLocale();
-        $action = $route->getAction();
+        $locale = app()->getLocale();
+        $action = $event->route->getAction();
         $locales = config('locale.locales');
-        if (isset($action['locale']) && $action['locale'] !== $currentLocale && in_array($action['locale'], $locales)) {
-            $app->setLocale($action['locale']);
+        if (isset($action['locale']) && $action['locale'] !== $locale && in_array($action['locale'], $locales)) {
+            app()->setLocale($action['locale']);
         }
     }
 
-    public function onLocaleChanged($currentLocale)
+    public function onLocaleChanged($locale)
     {
-        app('locale.manager')->setLocale($currentLocale);
+        app('locale.manager')->setLocale($locale);
     }
 
     public function onLocaleUpdated(LocaleUpdated $event)
