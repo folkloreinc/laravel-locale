@@ -1,23 +1,9 @@
 <?php namespace Folklore\LaravelLocale;
 
 use Closure;
-use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Contracts\Session\Session;
 
 class LocaleMiddleware
 {
-    protected $session;
-
-    /**
-     * Create a new filter instance.
-     *
-     * @param  Guard  $auth
-     * @return void
-     */
-    public function __construct(Session $session)
-    {
-        $this->session = $session;
-    }
 
     /**
      * Handle an incoming request.
@@ -29,7 +15,7 @@ class LocaleMiddleware
     public function handle($request, Closure $next)
     {
         $storeInSession = config('locale.store_in_session');
-        $locale = $storeInSession && $this->session->has('locale') ? $this->session->get('locale'):'auto';
+        $locale = $storeInSession && session()->has('locale') ? session()->get('locale'):'auto';
 
         $defaultLocale = app()->getLocale();
         $locales = config('locale.locales');
