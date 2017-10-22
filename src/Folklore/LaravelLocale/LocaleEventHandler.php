@@ -1,10 +1,7 @@
 <?php namespace Folklore\LaravelLocale;
 
-use App;
-use View;
-use Session;
-
 use Illuminate\Routing\Events\RouteMatched;
+use Illuminate\Foundation\Events\LocaleUpdated;
 
 class LocaleEventHandler
 {
@@ -23,10 +20,15 @@ class LocaleEventHandler
             $app->setLocale($action['locale']);
         }
     }
-    
+
     public function onLocaleChanged($currentLocale)
     {
         app('locale.manager')->setLocale($currentLocale);
+    }
+
+    public function onLocaleUpdated(LocaleUpdated $event)
+    {
+        app('locale.manager')->setLocale($event->locale);
     }
 
     /**
@@ -37,13 +39,8 @@ class LocaleEventHandler
      */
     public function subscribe($events)
     {
-        $events->listen(
-            \Illuminate\Routing\Events\RouteMatched::class,
-            self::class.'@onRouteMatched'
-        );
-        $events->listen(
-            'locale.changed',
-            self::class.'@onLocaleChanged'
-        );
+        $events->listen('locale.changed', self::class.'@onLocaleChanged');
+        $events->listen(LocaleUpdated::class, self::class.'@onLocaleUpdated');
+        $events->listen(RouteMatched::class, self::class.'@onRouteMatched');
     }
 }

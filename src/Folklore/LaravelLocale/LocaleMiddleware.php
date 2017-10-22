@@ -2,12 +2,11 @@
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
-
-use App;
-use Session;
+use Illuminate\Contracts\Session\Session;
 
 class LocaleMiddleware
 {
+    protected $session;
 
     /**
      * Create a new filter instance.
@@ -15,8 +14,9 @@ class LocaleMiddleware
      * @param  Guard  $auth
      * @return void
      */
-    public function __construct()
+    public function __construct(Session $session)
     {
+        $this->session = $session;
     }
 
     /**
@@ -29,11 +29,11 @@ class LocaleMiddleware
     public function handle($request, Closure $next)
     {
         $storeInSession = config('locale.store_in_session');
-        $locale = $storeInSession && Session::has('locale') ? Session::get('locale'):'auto';
-        
-        $defaultLocale = App::getLocale();
+        $locale = $storeInSession && $this->session->has('locale') ? $this->session->get('locale'):'auto';
+
+        $defaultLocale = app()->getLocale();
         $locales = config('locale.locales');
-        
+
         // Try to detect it from the request url
         $detectFromUrl = config('locale.detect_from_url');
         if ($detectFromUrl) {
@@ -42,17 +42,17 @@ class LocaleMiddleware
                 $locale = $segment;
             }
         }
-        
+
         // Try to detect it from the request headers
         $detectFromHeaders = config('locale.detect_from_headers', true);
         if ($locale !== 'auto' && $locale !== $defaultLocale) {
-            App::setLocale($locale);
+            app()->setLocale($locale);
         } elseif ($locale === 'auto' && $detectFromHeaders) {
             $browserLang = !empty($_SERVER['HTTP_ACCEPT_LANGUAGE']) ?
                 strtok(strip_tags($_SERVER['HTTP_ACCEPT_LANGUAGE']), ','):'';
             $browserLang = substr($browserLang, 0, 2);
             $userLang = in_array($browserLang, $locales) ? $browserLang : $defaultLocale;
-            App::setLocale($userLang);
+            app()->setLocale($userLang);
         }
 
         return $next($request);

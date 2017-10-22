@@ -24,29 +24,29 @@ class LocaleServiceProvider extends ServiceProvider
         $this->bootEventSubscriber();
         $this->bootLocale();
     }
-    
+
     protected function bootPublishes()
     {
         $configPath = __DIR__ . '/../../config/locale.php';
-        
+
         $this->mergeConfigFrom($configPath, 'locale');
-        
+
         $this->publishes([
             $configPath => config_path('locale.php')
         ], 'config');
     }
-    
+
     public function bootMiddlewares()
     {
         $http = $this->app['Illuminate\Contracts\Http\Kernel'];
         $http->pushMiddleware('Folklore\LaravelLocale\LocaleMiddleware');
     }
-    
+
     public function bootEventSubscriber()
     {
         $this->app['events']->subscribe('Folklore\LaravelLocale\LocaleEventHandler');
     }
-    
+
     public function bootLocale()
     {
         $this->app->booted(function ($app) {
@@ -63,7 +63,7 @@ class LocaleServiceProvider extends ServiceProvider
     {
         $this->registerLocaleManager();
     }
-    
+
     public function registerLocaleManager()
     {
         $this->app->singleton('locale.manager', function ($app) {
