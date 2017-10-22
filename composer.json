@@ -45,7 +45,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Folklore\\EloquentJsonSchema\\JsonSchemaServiceProvider"
+                "Folklore\\LaravelLocale\\LocaleServiceProvider"
             ]
         }
     }

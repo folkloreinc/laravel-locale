@@ -4,6 +4,7 @@ A simple localization package for Laravel 5. It provides URL detection, Route pa
 
 [![Latest Stable Version](https://poser.pugx.org/folklore/locale/v/stable.svg)](https://packagist.org/packages/folklore/locale)
 [![Build Status](https://travis-ci.org/Folkloreatelier/laravel-locale.png?branch=master)](https://travis-ci.org/Folkloreatelier/laravel-locale)
+[![Coverage Status](https://coveralls.io/repos/github/Folkloreatelier/laravel-locale/badge.svg?branch=master)](https://coveralls.io/github/Folkloreatelier/laravel-locale?branch=master)
 [![Total Downloads](https://poser.pugx.org/folklore/locale/downloads.svg)](https://packagist.org/packages/folklore/locale)
 
 ## Installation
@@ -38,7 +39,7 @@ $ composer update
 
 **3-** Add the service provider to your `app/config/app.php` file
 ```php
-'Folklore\LaravelLocale\LocaleServiceProvider',
+\Folklore\LaravelLocale\LocaleServiceProvider::class,
 ```
 
 **5-** Publish the configuration file
