@@ -19,15 +19,16 @@ class FeatureTest extends TestCase
             return app()->getLocale();
         }]);
 
-        $response = $this->get('/fr');
+        $response = $this->call('GET', '/fr');
         $this->assertEquals('fr', $response->getContent());
 
-        $response = $this->get('/en');
+        $response = $this->call('GET', '/en');
         $this->assertEquals('en', $response->getContent());
     }
 
     public function testDetectFromUrlSegment()
     {
+        Config::set('locale.detect_from_url', true);
         Route::get('/fr', function () {
             return app()->getLocale();
         });
@@ -36,24 +37,11 @@ class FeatureTest extends TestCase
             return app()->getLocale();
         });
 
-        $response = $this->get('/fr');
+        $response = $this->call('GET', '/fr');
         $this->assertEquals('fr', $response->getContent());
 
-        $response = $this->get('/en');
+        $response = $this->call('GET', '/en');
         $this->assertEquals('en', $response->getContent());
-    }
-
-    public function testStoreInSession()
-    {
-        Config::set('locale.store_in_session', true);
-        app()->setLocale('en');
-
-        Route::get('/fr', ['locale' => 'fr', function () {
-            return app()->getLocale();
-        }]);
-
-        $this->get('/fr');
-        $this->assertEquals('fr', Session::get('locale'));
     }
 
     public function testRetrieveFromSession()
@@ -65,17 +53,8 @@ class FeatureTest extends TestCase
             return app()->getLocale();
         }]);
 
-        $response = $this->withSession(['locale' => 'en'])
-            ->get('/');
+        Session::put('locale', 'en');
+        $response = $this->call('GET', '/');
         $this->assertEquals('en', $response->getContent());
-    }
-
-    public function testViewShare()
-    {
-        Config::set('app.locale', 'en');
-        app()->setLocale('fr');
-
-        $this->assertEquals('fr', View::shared('locale'));
-        $this->assertEquals(['en'], View::shared('otherLocales'));
     }
 }

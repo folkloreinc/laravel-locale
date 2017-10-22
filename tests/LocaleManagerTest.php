@@ -46,4 +46,19 @@ class LocaleManagerTest extends TestCase
         $this->manager->setLocale('fr');
         $this->assertTrue($obj->called);
     }
+
+    public function testStoreInSession()
+    {
+        Config::set('locale.store_in_session', true);
+        app()->setLocale('fr');
+        $this->assertEquals('fr', Session::get('locale'));
+    }
+
+    public function testViewShare()
+    {
+        Config::set('locale.share_with_views', true);
+        app()->setLocale('fr');
+        $this->assertEquals('fr', View::shared('locale'));
+        $this->assertEquals(['en'], View::shared('otherLocales'));
+    }
 }
