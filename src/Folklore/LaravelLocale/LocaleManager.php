@@ -60,4 +60,23 @@ class LocaleManager
 
         return $otherLocales;
     }
+
+    public function route($name, $locale = null, $parameters = [], $absolute = true)
+    {
+        if (is_array($locale)) {
+            $parameters = $locale;
+            $absolute = !is_array($parameters) ? $parameters : $absolute;
+            $locale = null;
+        }
+        $localizedName = $this->routeName($name, $locale);
+        return route($localizedName, $parameters, $absolute);
+    }
+
+    public function routeName($name, $locale = null)
+    {
+        if (is_null($locale)) {
+            $locale = $this->getLocale();
+        }
+        return $name.'.'.$locale;
+    }
 }

@@ -15,7 +15,7 @@ class FeatureTest extends TestCase
             return app()->getLocale();
         }]);
 
-        Route::get('/en', [ 'locale' => 'en', function () {
+        Route::get('/en', ['locale' => 'en', function () {
             return app()->getLocale();
         }]);
 

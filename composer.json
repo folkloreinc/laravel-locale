@@ -35,7 +35,10 @@
     "autoload": {
         "psr-0": {
             "Folklore\\LaravelLocale\\": "src/"
-        }
+        },
+        "files": [
+            "src/Folklore/LaravelLocale/helpers.php"
+        ]
     },
     "autoload-dev": {
         "classmap": [
