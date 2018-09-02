@@ -15,7 +15,7 @@ class LocaleMiddleware
     public function handle($request, Closure $next)
     {
         $storeInSession = config('locale.store_in_session');
-        $locale = $storeInSession && session()->has('locale') ? session()->get('locale'):'auto';
+        $locale = $storeInSession ? session()->get('locale', 'auto') : 'auto';
 
         $defaultLocale = app()->getLocale();
         $locales = config('locale.locales');

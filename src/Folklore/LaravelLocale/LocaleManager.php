@@ -10,10 +10,9 @@ class LocaleManager
     public function __construct($app)
     {
         $this->app = $app;
-        $this->setLocale($this->app->getLocale());
     }
 
-    public function setLocale($locale)
+    public function setLocale($locale, $storeInSession = true)
     {
         if ($locale !== $this->app->getLocale()) {
             $this->app->setLocale($locale);
@@ -26,7 +25,7 @@ class LocaleManager
 
         $this->locale = $locale;
 
-        if ($this->app['config']->get('locale.store_in_session')) {
+        if ($storeInSession && $this->app['config']->get('locale.store_in_session')) {
             $this->app['session']->put('locale', $locale);
         }
 

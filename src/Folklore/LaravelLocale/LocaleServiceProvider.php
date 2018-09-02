@@ -50,7 +50,7 @@ class LocaleServiceProvider extends ServiceProvider
     public function bootLocale()
     {
         $this->app->booted(function ($app) {
-            $app['locale.manager']->setLocale($app->getLocale());
+            $app['locale.manager']->setLocale($app->getLocale(), false);
         });
     }
 
