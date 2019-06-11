@@ -4,7 +4,6 @@ use Illuminate\Support\ServiceProvider;
 
 class LocaleServiceProvider extends ServiceProvider
 {
-
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -20,6 +19,7 @@ class LocaleServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->bootPublishes();
+        $this->bootMacros();
         $this->bootMiddlewares();
         $this->bootEventSubscriber();
         $this->bootLocale();
@@ -31,9 +31,31 @@ class LocaleServiceProvider extends ServiceProvider
 
         $this->mergeConfigFrom($configPath, 'locale');
 
-        $this->publishes([
-            $configPath => config_path('locale.php')
-        ], 'config');
+        $this->publishes(
+            [
+                $configPath => config_path('locale.php')
+            ],
+            'config'
+        );
+    }
+
+    public function bootMacros()
+    {
+        \Illuminate\Routing\Router::mixin(
+            $this->app->make(
+                \Folklore\LaravelLocale\Routing\RouterLocalized::class
+            )
+        );
+        \Illuminate\Routing\Route::mixin(
+            $this->app->make(
+                \Folklore\LaravelLocale\Routing\RouteLocalized::class
+            )
+        );
+        \Illuminate\Routing\UrlGenerator::mixin(
+            $this->app->make(
+                \Folklore\LaravelLocale\Routing\UrlGeneratorLocalized::class
+            )
+        );
     }
 
     public function bootMiddlewares()
@@ -44,7 +66,9 @@ class LocaleServiceProvider extends ServiceProvider
 
     public function bootEventSubscriber()
     {
-        $this->app['events']->subscribe('Folklore\LaravelLocale\LocaleEventHandler');
+        $this->app['events']->subscribe(
+            'Folklore\LaravelLocale\LocaleEventHandler'
+        );
     }
 
     public function bootLocale()

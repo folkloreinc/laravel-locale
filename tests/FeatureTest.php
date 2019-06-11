@@ -4,11 +4,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class FeatureTest extends TestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     public function testRouteLocale()
     {
         Route::get('/fr', ['locale' => 'fr', function () {

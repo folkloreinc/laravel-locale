@@ -1,6 +1,6 @@
 <?php
 
-if (! function_exists('route_locale')) {
+if (! function_exists('route_localized')) {
     /**
      * Generate the URL to a named localized route.
      *
@@ -10,14 +10,14 @@ if (! function_exists('route_locale')) {
      * @param  bool    $absolute
      * @return string
      */
-    function route_locale($name, $locale = null, $parameters = [], $absolute = true)
+    function route_localized($name, $locale = null, $parameters = [], $absolute = true)
     {
         if (is_array($locale)) {
             $parameters = $locale;
             $absolute = !is_array($parameters) ? $parameters : $absolute;
             $locale = null;
         }
-        return app('locale.manager')->route($name, $locale, $parameters, $absolute);
+        return app('url')->routeLocalized($name, $locale, $parameters, $absolute);
     }
 }
 
@@ -29,8 +29,8 @@ if (! function_exists('route_name_locale')) {
      * @param  string   $locale
      * @return string
      */
-    function route_name_locale($name, $locale = null)
+    function route_name_localized($name, $locale = null)
     {
-        return app('locale.manager')->routeName($name, $locale);
+        return app('router')->nameLocalized($name, $locale);
     }
 }

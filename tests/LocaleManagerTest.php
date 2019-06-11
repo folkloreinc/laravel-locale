@@ -6,34 +6,27 @@ use Folklore\LaravelLocale\LocaleChanged;
 
 class LocaleManagerTest extends TestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->manager = app('locale.manager');
-    }
-
     public function testGetLocale()
     {
-        $this->assertEquals(app()->getLocale(), $this->manager->getLocale());
+        $this->assertEquals(app()->getLocale(), app('locale.manager')->getLocale());
     }
 
     public function testAppGetLocale()
     {
         app()->setLocale('fr');
-        $this->assertEquals('fr', $this->manager->getLocale());
+        $this->assertEquals('fr', app('locale.manager')->getLocale());
     }
 
     public function testSetLocale()
     {
-        $this->manager->setLocale('fr');
+        app('locale.manager')->setLocale('fr');
         $this->assertEquals(app()->getLocale(), 'fr');
     }
 
     public function testGetOtherLocales()
     {
         app()->setLocale('fr');
-        $this->assertEquals($this->manager->getOtherLocales(), ['en']);
+        $this->assertEquals(app('locale.manager')->getOtherLocales(), ['en']);
     }
 
     public function testFireEvent()
@@ -43,7 +36,7 @@ class LocaleManagerTest extends TestCase
         app('events')->listen(LocaleChanged::class, function () use ($obj) {
             $obj->called = true;
         });
-        $this->manager->setLocale('fr');
+        app('locale.manager')->setLocale('fr');
         $this->assertTrue($obj->called);
     }
 
