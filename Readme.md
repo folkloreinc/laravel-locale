@@ -11,8 +11,12 @@ A simple localization package for Laravel 5. It provides URL detection, Route pa
 
 #### Dependencies:
 
-* [Laravel 5.x](https://github.com/laravel/laravel)
+##### Version prior to 3.0
+* [Laravel <= 5.7](https://github.com/laravel/laravel)
 
+
+##### Version 3.0 and up
+* [Laravel >= 5.5](https://github.com/laravel/laravel)
 
 #### Installation:
 
@@ -20,7 +24,7 @@ A simple localization package for Laravel 5. It provides URL detection, Route pa
 ```json
 {
 	"require": {
-		"folklore/laravel-locale": "~2.2"
+		"folklore/laravel-locale": "~3.0"
 	}
 }
 ```
