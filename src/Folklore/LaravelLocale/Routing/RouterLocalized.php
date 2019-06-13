@@ -12,9 +12,10 @@ class RouterLocalized
         return function ($callback, $action = []) {
             $locales = config('locale.locales', [app()->getLocale()]);
             foreach ($locales as $locale) {
-                $this->prefix($locale)->group(
+                $this->group(
                     array_merge(
                         [
+                            'prefix' => $locale,
                             'locale' => $locale,
                         ],
                         is_array($callback) ? $callback : $action
