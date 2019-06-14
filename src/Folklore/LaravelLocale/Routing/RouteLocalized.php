@@ -7,7 +7,11 @@ class RouteLocalized
     public function nameWithLocale()
     {
         return function ($name, $locale = null) {
-            return app('router')->nameLocalized($name, $locale);
+            if (is_null($locale)) {
+                $locale = $this->getAction('locale');
+            }
+            $nameWithLocale = app('router')->nameLocalized($name, $locale);
+            return $this->name($nameWithLocale);
         };
     }
 }

@@ -43,7 +43,9 @@ class RouterLocalized
             }
             $transNamespace = config('locale.routes_translations_namespace', 'routes');
             $transKey = !empty($transNamespace) ? sprintf('%s.%s', $transNamespace, $uri) : $uri;
-            return $this->addRoute((array)$methods, trans($transKey, [], $locale), $action);
+            $translator = app('translator');
+            $uri = $translator->has($transKey, $locale) ? $translator->trans($transKey, [], $locale) : $uri;
+            return $this->addRoute((array)$methods, $uri, $action);
         };
     }
 
