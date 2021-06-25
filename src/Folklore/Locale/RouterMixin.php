@@ -1,6 +1,6 @@
 <?php
 
-namespace Folklore\Laravel;
+namespace Folklore\Locale;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Translation\Translator;

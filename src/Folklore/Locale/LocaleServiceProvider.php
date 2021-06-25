@@ -1,4 +1,4 @@
-<?php namespace Folklore\LaravelLocale;
+<?php namespace Folklore\Locale;
 
 use Illuminate\Support\ServiceProvider;
 use ReflectionClass;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Folklore\Locale\Routing;
+namespace Folklore\Locale;
 
 use Illuminate\Routing\Router;
 
