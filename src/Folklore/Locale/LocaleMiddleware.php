@@ -44,8 +44,9 @@ class LocaleMiddleware
 
     protected function getFromRequest($request): ?string
     {
+        $route = $request->route();
         $routeLocale = data_get(
-            $request->route()->getAction(),
+            !is_null($route) ? $route->getAction() : null,
             'locale',
             $request->route('locale')
         );
