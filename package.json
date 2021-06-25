@@ -1,0 +1,11 @@
+{
+    "private": true,
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/folkloreinc/laravel-locale.git"
+    },
+    "license": "ISC",
+    "devDependencies": {
+        "@prettier/plugin-php": "^0.17.1"
+    }
+}

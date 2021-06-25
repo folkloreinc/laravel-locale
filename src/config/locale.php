@@ -1,14 +1,9 @@
 <?php
 
+return [
+    'locales' => ['en', 'fr'],
 
-return array(
-
-    'locales' => array(
-        'en',
-        'fr'
-    ),
-
-    'detect_from_url' => true,
+    'uses_user_locale_preference' => true,
 
     'detect_from_headers' => true,
 
@@ -16,6 +11,5 @@ return array(
 
     'share_with_views' => true,
 
-    'routes_translations_namespace' => 'routes'
-
-);
+    'translations_namespace' => 'routes',
+];
