@@ -69,8 +69,13 @@ class RouterMixin
     {
         $app = $this->app;
         $translator = $this->translator;
+        $namespace = config('locale.translations_namespace', 'routes');
 
-        return function ($methods, $uri, $action = null, $locale = null) use ($app, $translator) {
+        return function ($methods, $uri, $action = null, $locale = null) use (
+            $app,
+            $translator,
+            $namespace
+        ) {
             if (is_null($locale)) {
                 if ($this->hasGroupStack()) {
                     $groupStack = $this->getGroupStack();
@@ -79,15 +84,8 @@ class RouterMixin
                     $locale = $app->getLocale();
                 }
             }
-            $uri = $translator->has(
-                config('locale.translations_namespace', 'routes') . '.' . $uri,
-                $locale
-            )
-                ? $translator->get(
-                    config('locale.translations_namespace', 'routes') . '.' . $uri,
-                    [],
-                    $locale
-                )
+            $uri = $translator->has($namespace . '.' . $uri, $locale)
+                ? $translator->get($namespace . '.' . $uri, [], $locale)
                 : $uri;
             return $this->addRoute((array) $methods, $uri, $action);
         };
@@ -139,8 +137,9 @@ class RouterMixin
     {
         $app = $this->app;
         $translator = $this->translator;
+        $namespace = config('locale.translations_namespace', 'routes');
 
-        return function ($name, $controller, $locale = null) use ($app, $translator) {
+        return function ($name, $controller, $locale = null) use ($app, $translator, $namespace) {
             if (is_null($locale)) {
                 if ($this->hasGroupStack()) {
                     $groupStack = $this->getGroupStack();
@@ -149,15 +148,8 @@ class RouterMixin
                     $locale = $app->getLocale();
                 }
             }
-            $localizedName = $translator->has(
-                config('locale.translations_namespace', 'routes') . '.' . $name,
-                $locale
-            )
-                ? $translator->get(
-                    config('locale.translations_namespace', 'routes') . '.' . $name,
-                    [],
-                    $locale
-                )
+            $localizedName = $translator->has($namespace . '.' . $name, $locale)
+                ? $translator->get($namespace . '.' . $name, [], $locale)
                 : $name;
             $names = $this->nameWithLocale($name, $locale);
             return $this->resource($localizedName, $controller)

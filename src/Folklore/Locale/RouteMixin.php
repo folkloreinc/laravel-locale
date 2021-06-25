@@ -7,13 +7,10 @@ use Illuminate\Routing\Router;
 
 class RouteMixin
 {
-    protected $app;
-
     protected $router;
 
-    public function __construct(Application $app, Router $router)
+    public function __construct(Router $router)
     {
-        $this->app = $app;
         $this->router = $router;
     }
 
