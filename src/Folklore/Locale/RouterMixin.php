@@ -13,11 +13,14 @@ class RouterMixin
 
     protected $locales;
 
-    public function __construct(Application $app, Translator $translator, $locales)
+    public function __construct(Application $app, Translator $translator)
     {
         $this->app = $app;
         $this->translator = $translator;
-        $this->locales = $locales;
+        $this->locales = $this->app['config']->get(
+            'locale.locales',
+            $this->app['config']->get('app.locales', [$this->app->getLocale()])
+        );
     }
 
     public function nameWithLocale()
@@ -76,8 +79,15 @@ class RouterMixin
                     $locale = $app->getLocale();
                 }
             }
-            $uri = $translator->has(config('locale.translations_namespace', 'routes').'.' . $uri, $locale)
-                ? $translator->get(config('locale.translations_namespace', 'routes').'.' . $uri, [], $locale)
+            $uri = $translator->has(
+                config('locale.translations_namespace', 'routes') . '.' . $uri,
+                $locale
+            )
+                ? $translator->get(
+                    config('locale.translations_namespace', 'routes') . '.' . $uri,
+                    [],
+                    $locale
+                )
                 : $uri;
             return $this->addRoute((array) $methods, $uri, $action);
         };
@@ -139,8 +149,15 @@ class RouterMixin
                     $locale = $app->getLocale();
                 }
             }
-            $localizedName = $translator->has(config('locale.translations_namespace', 'routes').'.' . $name, $locale)
-                ? $translator->get(config('locale.translations_namespace', 'routes').'.' . $name, [], $locale)
+            $localizedName = $translator->has(
+                config('locale.translations_namespace', 'routes') . '.' . $name,
+                $locale
+            )
+                ? $translator->get(
+                    config('locale.translations_namespace', 'routes') . '.' . $name,
+                    [],
+                    $locale
+                )
                 : $name;
             $names = $this->nameWithLocale($name, $locale);
             return $this->resource($localizedName, $controller)
