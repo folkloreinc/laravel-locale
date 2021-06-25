@@ -21,7 +21,7 @@ class LocaleMiddleware
         $requestLocale = $this->getFromRequest($request);
         $sessionLocale = $this->getFromSession($request);
         $userLocale = $this->getFromUser($request);
-        $browserLocale = $this->getFromRequestHeaders($request, $locales);
+        $browserLocale = $this->getFromRequestHeaders($request);
         $detectedLocale =
             $requestLocale ?? ($sessionLocale ?? ($userLocale ?? ($browserLocale ?? null)));
         $newLocale = in_array($detectedLocale, $locales) ? $detectedLocale : $locales[0];
