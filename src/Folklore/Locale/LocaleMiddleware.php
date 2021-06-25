@@ -8,7 +8,7 @@ class LocaleMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\ $request
      * @param  \Closure  $next
      * @return mixed
      */
@@ -42,7 +42,7 @@ class LocaleMiddleware
         return $next($request);
     }
 
-    protected function getFromRequest(Request $request): ?string
+    protected function getFromRequest($request): ?string
     {
         $routeLocale = data_get(
             $request->route()->getAction(),
@@ -52,7 +52,7 @@ class LocaleMiddleware
         return $request->input('locale', $routeLocale);
     }
 
-    protected function getFromSession(Request $request): ?string
+    protected function getFromSession($request): ?string
     {
         if (!config('locale.store_in_session', true)) {
             return null;
@@ -60,7 +60,7 @@ class LocaleMiddleware
         return $request->hasSession() ? $request->session()->get('locale') : null;
     }
 
-    protected function getFromUser(Request $request): ?string
+    protected function getFromUser($request): ?string
     {
         if (!config('locale.uses_user_locale_preference', true)) {
             return null;
@@ -71,7 +71,7 @@ class LocaleMiddleware
             : null;
     }
 
-    protected function getFromRequestHeaders(Request $request): ?string
+    protected function getFromRequestHeaders($request): ?string
     {
         if (!config('locale.detect_from_headers', true)) {
             return null;
