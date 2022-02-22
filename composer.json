@@ -1,6 +1,6 @@
 {
     "name": "folklore/laravel-locale",
-    "description": "Localization package for Laravel 8",
+    "description": "Localization package for Laravel 8/9",
     "keywords": ["framework", "laravel", "localization", "locale", "translation"],
     "authors": [
         {
@@ -19,11 +19,11 @@
     "type": "project",
     "require": {
         "php": "^7.3|^8.0",
-        "illuminate/support": "8.*"
+        "illuminate/support": "8.*|9.*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
-        "orchestra/testbench": "6.*",
+        "orchestra/testbench": "6.*|7.*",
         "mockery/mockery": "^1.4.2",
         "phpunit/phpunit": "^9.3.3",
         "php-coveralls/php-coveralls": "^2.4"
