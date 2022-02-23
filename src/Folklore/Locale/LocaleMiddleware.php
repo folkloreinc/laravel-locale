@@ -79,7 +79,7 @@ class LocaleMiddleware
         $locales = config('locale.locales', config('app.locales', [app()->getLocale()]));
         return collect(explode(',', $acceptLanguage))
             ->map(function ($lang) {
-                return trim(explode('-', strtolower(trim(explode(';', trim($lang))[0])), $lang)[0]);
+                return trim(explode('-', strtolower(trim(explode(';', trim($lang))[0])))[0]);
             })
             ->fitler(function ($lang) use ($locales) {
                 return !empty($lang) && in_array($lang, $locales);
