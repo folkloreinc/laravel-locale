@@ -49,7 +49,7 @@ class LocaleServiceProvider extends ServiceProvider
 
     public function bootViews()
     {
-        if (config('locale.share_with_views')) {
+        if (!config('locale.share_with_views')) {
             return;
         }
 
