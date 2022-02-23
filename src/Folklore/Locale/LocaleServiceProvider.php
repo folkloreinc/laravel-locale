@@ -1,6 +1,8 @@
 <?php namespace Folklore\Locale;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Routing\Events\RouteMatched;
+use Illuminate\Http\Request;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -22,6 +24,7 @@ class LocaleServiceProvider extends ServiceProvider
     {
         $this->bootPublishes();
         $this->bootMacros();
+        $this->bootRouting();
         $this->bootMiddlewares();
         $this->bootViews();
     }
@@ -45,11 +48,15 @@ class LocaleServiceProvider extends ServiceProvider
         $this->attachMixin(\Illuminate\Routing\Router::class, RouterMixin::class);
         $this->attachMixin(\Illuminate\Routing\Route::class, RouteMixin::class);
         $this->attachMixin(\Illuminate\Routing\UrlGenerator::class, UrlGeneratorMixin::class);
+
+        Request::macro('locale', function () {
+            return app()->getLocale();
+        });
     }
 
     public function bootViews()
     {
-        if (!config('locale.share_with_views')) {
+        if (!$this->app['config']->get('locale.share_with_views', false)) {
             return;
         }
 
@@ -66,6 +73,29 @@ class LocaleServiceProvider extends ServiceProvider
         $this->app[\Illuminate\Contracts\Http\Kernel::class]->pushMiddleware(
             LocaleMiddleware::class
         );
+    }
+
+    public function bootRouting()
+    {
+        if (!$this->app['config']->get('locale.detect_from_route', true)) {
+            return;
+        }
+
+        // Set locale when route is matched
+        $locales = $this->app['config']->get('locale.locales');
+        $this->app['events']->listen(RouteMatched::class, function (RouteMatched $event) use (
+            $locales
+        ) {
+            $locale = $this->app->getLocale();
+            $action = $event->route->getAction();
+            // prettier-ignore
+            if (isset($action['locale']) &&
+                $action['locale'] !== $locale &&
+                in_array($action['locale'], $locales)
+            ) {
+                $this->app->setLocale($action['locale']);
+            }
+        });
     }
 
     protected function attachMixin($macroable, $mixin)

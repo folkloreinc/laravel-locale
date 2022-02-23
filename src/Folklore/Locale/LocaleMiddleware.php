@@ -21,7 +21,7 @@ class LocaleMiddleware
         $requestLocale = $this->getFromRequest($request);
         $sessionLocale = $this->getFromSession($request);
         $userLocale = $this->getFromUser($request);
-        $browserLocale = $this->getFromRequestHeaders($request);
+        $browserLocale = $this->getFromHeaders($request);
         $detectedLocale =
             $requestLocale ?? ($sessionLocale ?? ($userLocale ?? ($browserLocale ?? null)));
         $newLocale = in_array($detectedLocale, $locales) ? $detectedLocale : $locales[0];
@@ -44,13 +44,8 @@ class LocaleMiddleware
 
     protected function getFromRequest($request): ?string
     {
-        $route = $request->route();
-        $routeLocale = data_get(
-            !is_null($route) ? $route->getAction() : null,
-            'locale',
-            $request->route('locale')
-        );
-        return $request->input('locale', $routeLocale);
+        $parameter = config('locale.request_parameter');
+        return isset($parameter) ? $request->input($parameter) : null;
     }
 
     protected function getFromSession($request): ?string
@@ -72,14 +67,23 @@ class LocaleMiddleware
             : null;
     }
 
-    protected function getFromRequestHeaders($request): ?string
+    protected function getFromHeaders($request): ?string
     {
         if (!config('locale.detect_from_headers', true)) {
             return null;
         }
         $acceptLanguage = $request->headers->get('Accept-Language');
-        $browserLang = !empty($acceptLanguage) ? strtok(strip_tags($acceptLanguage), ',') : '';
-        $browserLang = strtolower(substr($browserLang, 0, 2));
-        return $browserLang;
+        if (empty($acceptLanguage)) {
+            return null;
+        }
+        $locales = config('locale.locales', config('app.locales', [app()->getLocale()]));
+        return collect(explode(',', $acceptLanguage))
+            ->map(function ($lang) {
+                return trim(explode('-', strtolower(trim(explode(';', trim($lang))[0])), $lang)[0]);
+            })
+            ->fitler(function ($lang) use ($locales) {
+                return !empty($lang) && in_array($lang, $locales);
+            })
+            ->first();
     }
 }
