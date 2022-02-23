@@ -49,12 +49,15 @@ class LocaleServiceProvider extends ServiceProvider
 
     public function bootViews()
     {
+        if (config('locale.share_with_views')) {
+            return;
+        }
+
+        $this->app['view']->share('locale', $this->app->getLocale());
         $this->app['events']->listen(Illuminate\Foundation\Events\LocaleUpdated::class, function (
             $locale
         ) {
-            if (config('locale.share_with_views')) {
-                $this->app['view']->share('locale', $this->app->getLocale());
-            }
+            $this->app['view']->share('locale', $this->app->getLocale());
         });
     }
 
