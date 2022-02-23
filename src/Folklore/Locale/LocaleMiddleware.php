@@ -81,7 +81,7 @@ class LocaleMiddleware
             ->map(function ($lang) {
                 return trim(explode('-', strtolower(trim(explode(';', trim($lang))[0])))[0]);
             })
-            ->fitler(function ($lang) use ($locales) {
+            ->filter(function ($lang) use ($locales) {
                 return !empty($lang) && in_array($lang, $locales);
             })
             ->first();
