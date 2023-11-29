@@ -1,5 +1,6 @@
 <?php namespace Folklore\Locale;
 
+use Closure;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Routing\Events\RouteMatched;
 use Illuminate\Http\Request;
@@ -14,6 +15,28 @@ class LocaleServiceProvider extends ServiceProvider
      * @var bool
      */
     protected $defer = false;
+
+    /**
+     * Register
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->app->singleton('locale.manager', function ($app) {
+            return new LocaleManager($app);
+        });
+
+        $this->app->alias('locale.manager', LocaleManager::class);
+
+        $this->app->bind(RouterMixin::class, function ($app) {
+            return new RouterMixin(
+                $app['locale.manager'],
+                $app['translator'],
+                $app['config']->get('locale.translations_namespace', 'routes')
+            );
+        });
+    }
 
     /**
      * Bootstrap the application events.
@@ -82,10 +105,11 @@ class LocaleServiceProvider extends ServiceProvider
         }
 
         // Set locale when route is matched
-        $locales = $this->app['config']->get('locale.locales');
-        $this->app['events']->listen(RouteMatched::class, function (RouteMatched $event) use (
-            $locales
-        ) {
+        $this->app['events']->listen(RouteMatched::class, function (RouteMatched $event) {
+            $locales = config('locale.locales', config('app.locales', [app()->getLocale()]));
+            if ($locales instanceof Closure) {
+                $locales = $locales($event->request);
+            }
             $locale = $this->app->getLocale();
             $action = $event->route->getAction();
             // prettier-ignore

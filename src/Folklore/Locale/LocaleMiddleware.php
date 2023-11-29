@@ -5,6 +5,13 @@ use Illuminate\Contracts\Translation\HasLocalePreference;
 
 class LocaleMiddleware
 {
+    protected $localeManager;
+
+    public function __construct(LocaleManager $manager)
+    {
+        $this->localeManager = $manager;
+    }
+
     /**
      * Handle an incoming request.
      *
@@ -15,7 +22,7 @@ class LocaleMiddleware
     public function handle($request, Closure $next)
     {
         $currentLocale = app()->getLocale();
-        $locales = config('locale.locales', config('app.locales', [$currentLocale]));
+        $locales = $this->localeManager->resolveLocalesFromRequest($request);
 
         // Get locale from request or session
         $requestLocale = $this->getFromRequest($request);
@@ -76,7 +83,7 @@ class LocaleMiddleware
         if (empty($acceptLanguage)) {
             return null;
         }
-        $locales = config('locale.locales', config('app.locales', [app()->getLocale()]));
+        $locales = $this->localeManager->resolveLocalesFromRequest($request);
         return collect(explode(',', $acceptLanguage))
             ->map(function ($lang) {
                 return trim(explode('-', strtolower(trim(explode(';', trim($lang))[0])))[0]);

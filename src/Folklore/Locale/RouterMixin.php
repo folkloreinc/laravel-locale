@@ -7,28 +7,28 @@ use Illuminate\Contracts\Translation\Translator;
 
 class RouterMixin
 {
-    protected $app;
+    protected $manager;
 
     protected $translator;
 
-    protected $locales;
+    protected $translationsNamespace;
 
-    public function __construct(Application $app, Translator $translator)
-    {
-        $this->app = $app;
+    public function __construct(
+        LocaleManager $manager,
+        Translator $translator,
+        string $translationsNamespace = 'routes'
+    ) {
+        $this->manager = $manager;
         $this->translator = $translator;
-        $this->locales = $this->app['config']->get(
-            'locale.locales',
-            $this->app['config']->get('app.locales', [$this->app->getLocale()])
-        );
+        $this->translationsNamespace = $translationsNamespace;
     }
 
     public function nameWithLocale()
     {
-        $app = $this->app;
-        return function ($name, $locale = null) use ($app) {
+        $manager = $this->manager;
+        return function ($name, $locale = null) use ($manager) {
             if (is_null($locale)) {
-                $locale = $app->getLocale();
+                $locale = $manager->locale();
             }
             return $locale . '.' . $name;
         };
@@ -46,7 +46,7 @@ class RouterMixin
 
     public function groupWithLocales()
     {
-        $locales = $this->locales;
+        $locales = $this->manager->locales();
         return function ($callback, $action = []) use ($locales) {
             $originalAction = $action;
             $action = is_array($callback) ? $callback : $action;
@@ -67,21 +67,21 @@ class RouterMixin
 
     public function addRouteTrans()
     {
-        $app = $this->app;
+        $manager = $this->manager;
         $translator = $this->translator;
-        $namespace = config('locale.translations_namespace', 'routes');
+        $namespace = $this->translationsNamespace;
 
         return function ($methods, $uri, $action = null, $locale = null) use (
-            $app,
+            $manager,
             $translator,
             $namespace
         ) {
             if (is_null($locale)) {
                 if ($this->hasGroupStack()) {
                     $groupStack = $this->getGroupStack();
-                    $locale = data_get(end($groupStack), 'locale', $app->getLocale());
+                    $locale = data_get(end($groupStack), 'locale', $manager->locale());
                 } else {
-                    $locale = $app->getLocale();
+                    $locale = $manager->locale();
                 }
             }
             $uri = $translator->has($namespace . '.' . $uri, $locale)
@@ -135,17 +135,21 @@ class RouterMixin
 
     public function resourceTrans()
     {
-        $app = $this->app;
+        $manager = $this->manager;
         $translator = $this->translator;
-        $namespace = config('locale.translations_namespace', 'routes');
+        $namespace = $this->translationsNamespace;
 
-        return function ($name, $controller, $locale = null) use ($app, $translator, $namespace) {
+        return function ($name, $controller, $locale = null) use (
+            $manager,
+            $translator,
+            $namespace
+        ) {
             if (is_null($locale)) {
                 if ($this->hasGroupStack()) {
                     $groupStack = $this->getGroupStack();
-                    $locale = data_get(end($groupStack), 'locale', $app->getLocale());
+                    $locale = data_get(end($groupStack), 'locale', $manager->locale());
                 } else {
-                    $locale = $app->getLocale();
+                    $locale = $manager->locale();
                 }
             }
             $localizedName = $translator->has($namespace . '.' . $name, $locale)
