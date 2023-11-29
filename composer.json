@@ -1,7 +1,13 @@
 {
     "name": "folklore/laravel-locale",
     "description": "Localization package for Laravel 8/9",
-    "keywords": ["framework", "laravel", "localization", "locale", "translation"],
+    "keywords": [
+        "framework",
+        "laravel",
+        "localization",
+        "locale",
+        "translation"
+    ],
     "authors": [
         {
             "name": "Folklore",
