@@ -81,7 +81,7 @@ class LocaleServiceProvider extends ServiceProvider
 
     public function bootCarbon()
     {
-        if (!$this->app['config']->get('locale.set_carbon_locale', false)) {
+        if (!$this->app['config']->get('locale.set_carbon_locale', true)) {
             return;
         }
 
@@ -95,7 +95,7 @@ class LocaleServiceProvider extends ServiceProvider
 
     public function bootViews()
     {
-        if (!$this->app['config']->get('locale.share_with_views', false)) {
+        if (!$this->app['config']->get('locale.share_with_views', true)) {
             return;
         }
 
