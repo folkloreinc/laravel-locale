@@ -15,5 +15,7 @@ return [
 
     'share_with_views' => true,
 
+    'set_carbon_locale' => true,
+
     'translations_namespace' => 'routes',
 ];

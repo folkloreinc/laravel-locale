@@ -1,5 +1,6 @@
 <?php namespace Folklore\Locale;
 
+use Carbon\Carbon;
 use Closure;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Routing\Events\RouteMatched;
@@ -50,6 +51,7 @@ class LocaleServiceProvider extends ServiceProvider
         $this->bootRouting();
         $this->bootMiddlewares();
         $this->bootViews();
+        $this->bootCarbon();
     }
 
     protected function bootPublishes()
@@ -77,6 +79,20 @@ class LocaleServiceProvider extends ServiceProvider
         });
     }
 
+    public function bootCarbon()
+    {
+        if (!$this->app['config']->get('locale.set_carbon_locale', false)) {
+            return;
+        }
+
+        Carbon::setLocale($this->app->getLocale());
+        $this->app['events']->listen(\Illuminate\Foundation\Events\LocaleUpdated::class, function (
+            $locale
+        ) {
+            Carbon::setLocale($this->app->getLocale());
+        });
+    }
+
     public function bootViews()
     {
         if (!$this->app['config']->get('locale.share_with_views', false)) {
@@ -84,7 +100,7 @@ class LocaleServiceProvider extends ServiceProvider
         }
 
         $this->app['view']->share('locale', $this->app->getLocale());
-        $this->app['events']->listen(Illuminate\Foundation\Events\LocaleUpdated::class, function (
+        $this->app['events']->listen(\Illuminate\Foundation\Events\LocaleUpdated::class, function (
             $locale
         ) {
             $this->app['view']->share('locale', $this->app->getLocale());
