@@ -25,7 +25,11 @@
     "type": "project",
     "require": {
         "php": "^7.3|^8.0.2",
+<<<<<<< HEAD
         "illuminate/support": "8.*|9.*|10.*|11.*|12.*"
+=======
+        "illuminate/support": "8.*|9.*|10.*|11.*"
+>>>>>>> 64a1911379d04a1785a6ec617fd3dfed2b2d503e
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
