@@ -1,0 +1,115 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^PHPDoc tag @param has invalid value \(\\Illuminate\\Http\\ \$request\)\: Unexpected token "\\\\", expected variable at offset 77 on line 4$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: src/Folklore/Locale/LocaleMiddleware.php
+
+		-
+			message: '#^Call to an undefined method Folklore\\Locale\\RouteMixin\:\:getAction\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: src/Folklore/Locale/RouteMixin.php
+
+		-
+			message: '#^Call to an undefined method Folklore\\Locale\\RouteMixin\:\:getName\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Folklore/Locale/RouteMixin.php
+
+		-
+			message: '#^Call to an undefined method Folklore\\Locale\\RouteMixin\:\:name\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: src/Folklore/Locale/RouteMixin.php
+
+		-
+			message: '#^Call to an undefined method Folklore\\Locale\\RouteMixin\:\:setAction\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Folklore/Locale/RouteMixin.php
+
+		-
+			message: '#^Call to an undefined method Folklore\\Locale\\RouterMixin\:\:addRoute\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Folklore/Locale/RouterMixin.php
+
+		-
+			message: '#^Call to an undefined method Folklore\\Locale\\RouterMixin\:\:getGroupStack\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: src/Folklore/Locale/RouterMixin.php
+
+		-
+			message: '#^Call to an undefined method Folklore\\Locale\\RouterMixin\:\:group\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Folklore/Locale/RouterMixin.php
+
+		-
+			message: '#^Call to an undefined method Folklore\\Locale\\RouterMixin\:\:hasGroupStack\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: src/Folklore/Locale/RouterMixin.php
+
+		-
+			message: '#^Call to an undefined method Folklore\\Locale\\RouterMixin\:\:mergeWithLastGroup\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Folklore/Locale/RouterMixin.php
+
+		-
+			message: '#^Call to an undefined method Folklore\\Locale\\RouterMixin\:\:resource\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Folklore/Locale/RouterMixin.php
+
+		-
+			message: '#^Method Folklore\\Locale\\RouterMixin\:\:addRouteTrans\(\) invoked with 4 parameters, 0 required\.$#'
+			identifier: arguments.count
+			count: 6
+			path: src/Folklore/Locale/RouterMixin.php
+
+		-
+			message: '#^Method Folklore\\Locale\\RouterMixin\:\:nameWithLocale\(\) invoked with 2 parameters, 0 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/Folklore/Locale/RouterMixin.php
+
+		-
+			message: '#^Call to an undefined method Folklore\\Locale\\UrlGeneratorMixin\:\:route\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Folklore/Locale/UrlGeneratorMixin.php
+
+		-
+			message: '#^Call to function is_array\(\) with array\<mixed, mixed\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Folklore/Locale/UrlGeneratorMixin.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Routing\\Router\:\:nameWithLocale\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Folklore/Locale/helpers.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Routing\\UrlGenerator\:\:routeWithLocale\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Folklore/Locale/helpers.php
+
+		-
+			message: '#^Call to function is_array\(\) with \*NEVER\* will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Folklore/Locale/helpers.php
+
+		-
+			message: '#^Call to function is_array\(\) with string\|null will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: src/Folklore/Locale/helpers.php

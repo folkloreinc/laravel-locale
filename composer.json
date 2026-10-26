@@ -32,7 +32,8 @@
         "mockery/mockery": "^1.6",
         "orchestra/testbench": "^8.0|^9.0|^10.0|^11.0",
         "phpunit/phpunit": "^10.5.62|^11.5.50|^12.5.8",
-        "laravel/pint": "^1.13"
+        "laravel/pint": "^1.13",
+        "larastan/larastan": "^2.9|^3.0"
     },
     "autoload": {
         "psr-0": {
@@ -49,6 +50,7 @@
     },
     "scripts": {
         "test": "vendor/bin/phpunit",
+        "analyse": "vendor/bin/phpstan analyse --memory-limit=1G",
         "format": "vendor/bin/pint"
     },
     "extra": {
