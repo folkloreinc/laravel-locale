@@ -1,0 +1,5 @@
+# Formatting-only commits, ignored by `git blame`.
+# Enable locally with: git config blame.ignoreRevsFile .git-blame-ignore-revs
+
+# Apply Laravel Pint formatting
+2fee726195938315e832af3d177793d426a68b9e
