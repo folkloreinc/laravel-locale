@@ -1,4 +1,5 @@
 <?php
+
 namespace Folklore\Locale;
 
 use Illuminate\Support\Facades\Facade as BaseFacade;

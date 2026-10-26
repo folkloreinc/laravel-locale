@@ -13,7 +13,7 @@ class RoutingTest extends TestCase
         $this->app['router']->getRoutes()->refreshNameLookups();
     }
 
-    public function testGroupsRoutesByLocale()
+    public function test_groups_routes_by_locale()
     {
         $router = $this->app['router'];
         $router->groupWithLocales(function ($locale) use ($router) {
@@ -31,7 +31,7 @@ class RoutingTest extends TestCase
         $this->get('/en')->assertOk()->assertSeeText('en');
     }
 
-    public function testGroupsRoutesByLocaleWithAPrefix()
+    public function test_groups_routes_by_locale_with_a_prefix()
     {
         $router = $this->app['router'];
         $router->groupWithLocales(['prefix' => 'blog'], function ($locale) use ($router) {
@@ -47,7 +47,7 @@ class RoutingTest extends TestCase
         $this->get('/fr/blog')->assertOk()->assertSeeText('fr');
     }
 
-    public function testTranslatesRouteUris()
+    public function test_translates_route_uris()
     {
         $this->app['translator']->addLines(['routes.about' => 'a-propos'], 'fr');
 
@@ -66,7 +66,7 @@ class RoutingTest extends TestCase
         $this->get('/fr/a-propos')->assertOk()->assertSeeText('fr');
     }
 
-    public function testGeneratesTheUrlOfTheCurrentLocale()
+    public function test_generates_the_url_of_the_current_locale()
     {
         $router = $this->app['router'];
         $router->groupWithLocales(function ($locale) use ($router) {
@@ -80,7 +80,7 @@ class RoutingTest extends TestCase
         $this->assertSame('/fr', route_with_locale('home', 'fr', [], false));
     }
 
-    public function testSetsTheLocaleOfARoute()
+    public function test_sets_the_locale_of_a_route()
     {
         $this->app['router']
             ->get('/contact', function () {
@@ -91,7 +91,7 @@ class RoutingTest extends TestCase
         $this->get('/contact')->assertOk()->assertSeeText('fr');
     }
 
-    public function testNamesRoutesWithALocale()
+    public function test_names_routes_with_a_locale()
     {
         $this->assertSame('fr.home', route_name_with_locale('home', 'fr'));
 

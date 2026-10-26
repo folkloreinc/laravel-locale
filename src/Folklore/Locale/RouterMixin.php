@@ -2,7 +2,6 @@
 
 namespace Folklore\Locale;
 
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Translation\Translator;
 
 class RouterMixin
@@ -26,11 +25,13 @@ class RouterMixin
     public function nameWithLocale()
     {
         $manager = $this->manager;
+
         return function ($name, $locale = null) use ($manager) {
             if (is_null($locale)) {
                 $locale = $manager->locale();
             }
-            return $locale . '.' . $name;
+
+            return $locale.'.'.$name;
         };
     }
 
@@ -40,6 +41,7 @@ class RouterMixin
             $this->mergeWithLastGroup([
                 'locale' => $locale,
             ]);
+
             return $this;
         };
     }
@@ -47,20 +49,22 @@ class RouterMixin
     public function groupWithLocales()
     {
         $locales = $this->manager->locales();
+
         return function ($callback, $action = []) use ($locales) {
             $originalAction = $action;
             $action = is_array($callback) ? $callback : $action;
             $callback = is_array($callback) ? $originalAction : $callback;
-            $prefix = isset($action['prefix']) ? '/' . $action['prefix'] : '';
+            $prefix = isset($action['prefix']) ? '/'.$action['prefix'] : '';
             foreach ($locales as $locale) {
                 $groupAction = array_merge($action, [
-                    'prefix' => $locale . $prefix,
+                    'prefix' => $locale.$prefix,
                     'locale' => $locale,
                 ]);
                 $this->group($groupAction, function () use ($locale, $callback) {
                     $callback($locale);
                 });
             }
+
             return $this;
         };
     }
@@ -84,9 +88,10 @@ class RouterMixin
                     $locale = $manager->locale();
                 }
             }
-            $uri = $translator->has($namespace . '.' . $uri, $locale)
-                ? $translator->get($namespace . '.' . $uri, [], $locale)
+            $uri = $translator->has($namespace.'.'.$uri, $locale)
+                ? $translator->get($namespace.'.'.$uri, [], $locale)
                 : $uri;
+
             return $this->addRoute((array) $methods, $uri, $action);
         };
     }
@@ -152,10 +157,11 @@ class RouterMixin
                     $locale = $manager->locale();
                 }
             }
-            $localizedName = $translator->has($namespace . '.' . $name, $locale)
-                ? $translator->get($namespace . '.' . $name, [], $locale)
+            $localizedName = $translator->has($namespace.'.'.$name, $locale)
+                ? $translator->get($namespace.'.'.$name, [], $locale)
                 : $name;
             $names = $this->nameWithLocale($name, $locale);
+
             return $this->resource($localizedName, $controller)
                 ->names($names)
                 ->parameters([
