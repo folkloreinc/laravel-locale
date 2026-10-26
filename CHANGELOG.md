@@ -2,6 +2,24 @@
 
 All notable changes to `folklore/laravel-locale` are documented in this file. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- Laravel Pint (`laravel` preset) and Larastan (level 5, with a baseline), checked in CI, and the Composer scripts `format` and `analyse`.
+- Tests for the router and URL macros and their helpers.
+- Dependabot updates for GitHub Actions and Composer, grouped weekly.
+
+### Changed
+
+- The sources are formatted with Pint instead of the Prettier PHP plugin. Formatting only: the commit is listed in `.git-blame-ignore-revs`.
+- `composer.json`: the package type is `library`, with an up-to-date description and a homepage.
+- Development files (tests, CI and tool configuration) are left out of the Composer archives.
+
+### Removed
+
+- The Prettier, npm and phpcs configuration.
+
 ## [8.2.0] - 2026-10-26
 
 ### Added
@@ -18,4 +36,5 @@ All notable changes to `folklore/laravel-locale` are documented in this file. Th
 
 - The Travis and Coveralls configuration.
 
+[Unreleased]: https://github.com/folkloreinc/laravel-locale/compare/v8.2.0...8.x
 [8.2.0]: https://github.com/folkloreinc/laravel-locale/compare/v8.1.0...v8.2.0
