@@ -1,6 +1,7 @@
 {
     "name": "folklore/laravel-locale",
-    "description": "Localization package for Laravel 8/9",
+    "description": "Locale detection, localized routes and localized URLs for Laravel",
+    "type": "library",
     "keywords": [
         "framework",
         "laravel",
@@ -8,6 +9,7 @@
         "locale",
         "translation"
     ],
+    "homepage": "https://github.com/folkloreinc/laravel-locale",
     "authors": [
         {
             "name": "Folklore",
@@ -22,13 +24,14 @@
         }
     ],
     "license": "MIT",
-    "type": "project",
     "require": {
         "php": "^7.3|^8.0.2",
         "illuminate/support": "8.*|9.*|10.*|11.*|12.*|13.*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
+        "larastan/larastan": "^2.9|^3.0",
+        "laravel/pint": "^1.13",
         "mockery/mockery": "^1.6",
         "orchestra/testbench": "^8.0|^9.0|^10.0|^11.0",
         "phpunit/phpunit": "^10.5.62|^11.5.50|^12.5.8"
@@ -47,7 +50,12 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/phpunit"
+        "test": "vendor/bin/phpunit",
+        "analyse": "vendor/bin/phpstan analyse --memory-limit=1G",
+        "format": "vendor/bin/pint"
+    },
+    "config": {
+        "sort-packages": true
     },
     "extra": {
         "laravel": {

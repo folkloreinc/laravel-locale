@@ -2,7 +2,9 @@
 
 namespace Folklore\Locale\Tests;
 
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Folklore\Locale\Facade;
+use Folklore\Locale\LocaleServiceProvider;
+use Illuminate\Foundation\Application;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
 class TestCase extends BaseTestCase
@@ -10,7 +12,7 @@ class TestCase extends BaseTestCase
     /**
      * Define environment setup.
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param  Application  $app
      * @return void
      */
     protected function getEnvironmentSetUp($app)
@@ -32,13 +34,13 @@ class TestCase extends BaseTestCase
 
     protected function getPackageProviders($app)
     {
-        return [\Folklore\Locale\LocaleServiceProvider::class];
+        return [LocaleServiceProvider::class];
     }
 
     protected function getPackageAliases($app)
     {
         return [
-            'LocaleManager' => \Folklore\Locale\Facade::class,
+            'LocaleManager' => Facade::class,
         ];
     }
 }

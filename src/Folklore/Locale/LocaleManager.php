@@ -32,12 +32,14 @@ class LocaleManager
     {
         $locales = $this->locales();
         $localesResolver = $this->localesResolver;
+
         return isset($localesResolver) ? $localesResolver($request, $locales) : $locales;
     }
 
     public function setLocalesResolver(?Closure $resolver)
     {
         $this->localesResolver = $resolver;
+
         return $this;
     }
 }

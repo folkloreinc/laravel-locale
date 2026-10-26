@@ -1,10 +1,17 @@
-<?php namespace Folklore\Locale;
+<?php
+
+namespace Folklore\Locale;
 
 use Carbon\Carbon;
 use Closure;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Routing\Events\RouteMatched;
+use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Foundation\Events\LocaleUpdated;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Events\RouteMatched;
+use Illuminate\Routing\Route;
+use Illuminate\Routing\Router;
+use Illuminate\Routing\UrlGenerator;
+use Illuminate\Support\ServiceProvider;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -56,7 +63,7 @@ class LocaleServiceProvider extends ServiceProvider
 
     protected function bootPublishes()
     {
-        $configPath = __DIR__ . '/../../config/locale.php';
+        $configPath = __DIR__.'/../../config/locale.php';
 
         $this->mergeConfigFrom($configPath, 'locale');
 
@@ -70,9 +77,9 @@ class LocaleServiceProvider extends ServiceProvider
 
     public function bootMacros()
     {
-        $this->attachMixin(\Illuminate\Routing\Router::class, RouterMixin::class);
-        $this->attachMixin(\Illuminate\Routing\Route::class, RouteMixin::class);
-        $this->attachMixin(\Illuminate\Routing\UrlGenerator::class, UrlGeneratorMixin::class);
+        $this->attachMixin(Router::class, RouterMixin::class);
+        $this->attachMixin(Route::class, RouteMixin::class);
+        $this->attachMixin(UrlGenerator::class, UrlGeneratorMixin::class);
 
         Request::macro('locale', function () {
             return app()->getLocale();
@@ -81,12 +88,12 @@ class LocaleServiceProvider extends ServiceProvider
 
     public function bootCarbon()
     {
-        if (!$this->app['config']->get('locale.set_carbon_locale', true)) {
+        if (! $this->app['config']->get('locale.set_carbon_locale', true)) {
             return;
         }
 
         Carbon::setLocale($this->app->getLocale());
-        $this->app['events']->listen(\Illuminate\Foundation\Events\LocaleUpdated::class, function (
+        $this->app['events']->listen(LocaleUpdated::class, function (
             $locale
         ) {
             Carbon::setLocale($this->app->getLocale());
@@ -95,12 +102,12 @@ class LocaleServiceProvider extends ServiceProvider
 
     public function bootViews()
     {
-        if (!$this->app['config']->get('locale.share_with_views', true)) {
+        if (! $this->app['config']->get('locale.share_with_views', true)) {
             return;
         }
 
         $this->app['view']->share('locale', $this->app->getLocale());
-        $this->app['events']->listen(\Illuminate\Foundation\Events\LocaleUpdated::class, function (
+        $this->app['events']->listen(LocaleUpdated::class, function (
             $locale
         ) {
             $this->app['view']->share('locale', $this->app->getLocale());
@@ -109,14 +116,14 @@ class LocaleServiceProvider extends ServiceProvider
 
     public function bootMiddlewares()
     {
-        $this->app[\Illuminate\Contracts\Http\Kernel::class]->pushMiddleware(
+        $this->app[Kernel::class]->pushMiddleware(
             LocaleMiddleware::class
         );
     }
 
     public function bootRouting()
     {
-        if (!$this->app['config']->get('locale.detect_from_route', true)) {
+        if (! $this->app['config']->get('locale.detect_from_route', true)) {
             return;
         }
 
@@ -128,7 +135,6 @@ class LocaleServiceProvider extends ServiceProvider
             }
             $locale = $this->app->getLocale();
             $action = $event->route->getAction();
-            // prettier-ignore
             if (isset($action['locale']) &&
                 $action['locale'] !== $locale &&
                 in_array($action['locale'], $locales)

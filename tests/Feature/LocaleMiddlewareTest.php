@@ -25,14 +25,14 @@ class LocaleMiddlewareTest extends TestCase
             ->getContent();
     }
 
-    public function testFallsBackToTheFirstLocaleByDefault()
+    public function test_falls_back_to_the_first_locale_by_default()
     {
         $this->app->setLocale('fr');
 
         $this->assertSame('en', $this->getLocale());
     }
 
-    public function testFallsBackToTheAppLocaleWhenEnabled()
+    public function test_falls_back_to_the_app_locale_when_enabled()
     {
         config(['locale.fallback_to_app_locale' => true]);
         $this->app->setLocale('fr');
@@ -40,7 +40,7 @@ class LocaleMiddlewareTest extends TestCase
         $this->assertSame('fr', $this->getLocale());
     }
 
-    public function testFallsBackToTheFirstLocaleWhenTheAppLocaleIsNotSupported()
+    public function test_falls_back_to_the_first_locale_when_the_app_locale_is_not_supported()
     {
         config(['locale.fallback_to_app_locale' => true]);
         $this->app->setLocale('de');
@@ -48,7 +48,7 @@ class LocaleMiddlewareTest extends TestCase
         $this->assertSame('en', $this->getLocale());
     }
 
-    public function testPrefersTheDetectedLocaleToTheAppLocale()
+    public function test_prefers_the_detected_locale_to_the_app_locale()
     {
         config(['locale.fallback_to_app_locale' => true]);
         $this->app->setLocale('fr');
@@ -56,7 +56,7 @@ class LocaleMiddlewareTest extends TestCase
         $this->assertSame('en', $this->getLocale('en-CA,en;q=0.9'));
     }
 
-    public function testFallsBackToTheFirstResolvedLocale()
+    public function test_falls_back_to_the_first_resolved_locale()
     {
         config(['locale.fallback_to_app_locale' => true]);
         $this->app->setLocale('fr');

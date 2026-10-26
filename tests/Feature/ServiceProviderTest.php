@@ -9,7 +9,7 @@ use Illuminate\Contracts\Http\Kernel;
 
 class ServiceProviderTest extends TestCase
 {
-    public function testRegistersTheLocaleManager()
+    public function test_registers_the_locale_manager()
     {
         $manager = $this->app->make('locale.manager');
 
@@ -18,12 +18,12 @@ class ServiceProviderTest extends TestCase
         $this->assertSame(['en', 'fr'], $manager->locales());
     }
 
-    public function testPushesTheLocaleMiddleware()
+    public function test_pushes_the_locale_middleware()
     {
         $this->assertTrue($this->app->make(Kernel::class)->hasMiddleware(LocaleMiddleware::class));
     }
 
-    public function testSetsTheLocaleOfTheMatchedRoute()
+    public function test_sets_the_locale_of_the_matched_route()
     {
         $this->app['router']->get('/fr', [
             'locale' => 'fr',

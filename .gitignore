@@ -1,5 +1,8 @@
 /vendor
 composer.lock
 /coverage
-/node_modules
-*.cache
+/build
+/.phpunit.cache
+.phpunit.result.cache
+phpunit.xml
+.DS_Store

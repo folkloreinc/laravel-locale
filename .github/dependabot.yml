@@ -1,0 +1,23 @@
+version: 2
+updates:
+  # Updates are grouped into one pull request per ecosystem, so each week runs CI
+  # once per ecosystem instead of once per dependency. Major Composer updates keep
+  # their own pull request.
+  - package-ecosystem: github-actions
+    directory: /
+    target-branch: 8.x
+    schedule:
+      interval: weekly
+    groups:
+      github-actions:
+        patterns: ["*"]
+
+  - package-ecosystem: composer
+    directory: /
+    target-branch: 8.x
+    schedule:
+      interval: weekly
+    versioning-strategy: widen
+    groups:
+      composer:
+        update-types: [minor, patch]
