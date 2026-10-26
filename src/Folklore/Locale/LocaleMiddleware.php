@@ -31,7 +31,9 @@ class LocaleMiddleware
         $browserLocale = $this->getFromHeaders($request);
         $detectedLocale =
             $requestLocale ?? ($sessionLocale ?? ($userLocale ?? ($browserLocale ?? null)));
-        $newLocale = in_array($detectedLocale, $locales) ? $detectedLocale : $locales[0];
+        $newLocale = in_array($detectedLocale, $locales)
+            ? $detectedLocale
+            : $this->getFallbackLocale($locales, $currentLocale);
 
         // Set new locale
         if (!is_null($newLocale) && $newLocale !== $currentLocale) {
@@ -47,6 +49,14 @@ class LocaleMiddleware
         }
 
         return $next($request);
+    }
+
+    protected function getFallbackLocale($locales, $currentLocale): ?string
+    {
+        if (config('locale.fallback_to_app_locale', false) && in_array($currentLocale, $locales)) {
+            return $currentLocale;
+        }
+        return $locales[0];
     }
 
     protected function getFromRequest($request): ?string
