@@ -89,3 +89,12 @@ Be sure to add the supported locales in `config/locale.php`
 
 ### View sharing
 By default, this package shares two variables to every views `$locale` and `$otherLocales`. The `$otherLocales` variable is an array containing all the other locales than the current one.
+
+### Fallback locale
+When no locale is detected (from the request parameter, the session, the user's preference or the `Accept-Language` header), the middleware uses the first entry of `locales`. To use the application's default locale (`app.locale`) instead, when it is one of `locales`, enable this option in `config/locale.php`:
+
+```php
+'fallback_to_app_locale' => true,
+```
+
+It is off by default in 8.x, to keep the previous behaviour.
