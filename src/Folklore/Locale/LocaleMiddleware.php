@@ -40,7 +40,6 @@ class LocaleMiddleware
             app()->setLocale($newLocale);
         }
 
-        // prettier-ignore
         if ($request->hasSession() &&
             config('locale.store_in_session', true) &&
             $newLocale !== $sessionLocale

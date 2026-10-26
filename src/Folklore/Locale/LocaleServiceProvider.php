@@ -128,7 +128,6 @@ class LocaleServiceProvider extends ServiceProvider
             }
             $locale = $this->app->getLocale();
             $action = $event->route->getAction();
-            // prettier-ignore
             if (isset($action['locale']) &&
                 $action['locale'] !== $locale &&
                 in_array($action['locale'], $locales)
