@@ -1,0 +1,96 @@
+name: run-tests
+
+on:
+  push:
+    branches: [8.x]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A new push to a pull request cancels its previous run. Runs on 8.x all finish.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4', '8.5']
+        # The versions active projects of the 8.x line use (PHP 8.2 and Laravel 10 at the lowest).
+        laravel: ['10.*', '11.*', '12.*', '13.*']
+        stability: [prefer-stable]
+        include:
+          - { laravel: '10.*', testbench: '8.*' }
+          - { laravel: '11.*', testbench: '9.*' }
+          - { laravel: '12.*', testbench: '10.*' }
+          - { laravel: '13.*', testbench: '11.*' }
+          # The lowest dependencies, once per Laravel version, on its lowest PHP version:
+          # that's where the declared minimums break. On newer PHP versions, Composer
+          # already skips the dependency versions they don't support.
+          - { php: '8.2', laravel: '10.*', testbench: '8.*', stability: prefer-lowest }
+          - { php: '8.2', laravel: '11.*', testbench: '9.*', stability: prefer-lowest }
+          - { php: '8.2', laravel: '12.*', testbench: '10.*', stability: prefer-lowest }
+          - { php: '8.3', laravel: '13.*', testbench: '11.*', stability: prefer-lowest }
+        # PHP versions each Laravel version supports.
+        exclude:
+          - { laravel: '10.*', php: '8.4' }
+          - { laravel: '10.*', php: '8.5' }
+          - { laravel: '11.*', php: '8.5' }
+          - { laravel: '13.*', php: '8.2' }
+
+    name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - ${{ matrix.stability }}
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+
+      # Every Laravel 10 and 11 release has a security advisory, so recent Composer versions
+      # refuse to install them. Active projects still run these versions, so the suite must cover them.
+      - name: Allow framework versions with security advisories
+        run: |
+          composer config --global policy.advisories.block false \
+            || composer config --global audit.block-insecure false \
+            || true
+
+      - name: Install dependencies
+        env:
+          COMPOSER_NO_SECURITY_BLOCKING: 1
+        run: |
+          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --dev --no-interaction --no-update
+          composer update --${{ matrix.stability }} --prefer-dist --no-interaction
+
+      - name: List installed versions
+        run: |
+          for package in laravel/framework orchestra/testbench phpunit/phpunit; do
+            composer show "$package" | grep -E '^(name |versions)'
+          done
+
+      - name: Run tests
+        run: vendor/bin/phpunit
+
+  # A single, stable check to require in branch protection, instead of every matrix job.
+  tests-passed:
+    if: always()
+    needs: [test]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    name: Tests passed
+
+    steps:
+      - name: Check that every test job succeeded
+        env:
+          TEST: ${{ needs.test.result }}
+        run: |
+          echo "test: $TEST"
+          test "$TEST" = success

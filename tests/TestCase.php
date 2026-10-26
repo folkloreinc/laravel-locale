@@ -38,7 +38,7 @@ class TestCase extends BaseTestCase
     protected function getPackageAliases($app)
     {
         return [
-            'LocaleManager' => \Folklore\Locale\LocaleFacade::class,
+            'LocaleManager' => \Folklore\Locale\Facade::class,
         ];
     }
 }
